@@ -1,0 +1,16 @@
+name: antepli_workspace
+
+packages:
+  - .
+  - modules/**
+
+scripts:
+  bootstrap:
+    run: melos bootstrap
+    description: Bootstrap workspace packages.
+  analyze:
+    run: melos exec -- flutter analyze
+    description: Analyze all packages.
+  test:
+    run: melos exec -- flutter test
+    description: Run tests in all packages.
