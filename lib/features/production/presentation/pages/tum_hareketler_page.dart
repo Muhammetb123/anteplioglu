@@ -6,9 +6,9 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/di.dart';
 import '../../../../core/widgets/gold_gradient_icon_button.dart';
 import '../../data/models/stock_movement_model.dart';
-import '../../domain/repositories/i_product_repository.dart';
-import '../../logic/product/product_cubit.dart';
-import '../../logic/product/product_state.dart';
+
+import '../../logic/stock_movement/stock_movement_cubit.dart';
+import '../../logic/stock_movement/stock_movement_state.dart';
 import '../widgets/stock_movement_tile_widget.dart';
 
 @RoutePage()
@@ -23,7 +23,7 @@ class TumHareketlerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProductCubit(getIt<IProductRepository>())
+      create: (_) => getIt<StockMovementCubit>()
         ..loadStockMovements(productId),
       child: _TumHareketlerView(productId: productId),
     );
@@ -44,7 +44,7 @@ class _TumHareketlerViewState extends State<_TumHareketlerView> {
 
   void _applyFilter(StockMovementType? type) {
     setState(() => _filter = type);
-    context.read<ProductCubit>().loadStockMovements(
+    context.read<StockMovementCubit>().loadStockMovements(
           widget.productId,
           type: type,
         );
@@ -61,6 +61,7 @@ class _TumHareketlerViewState extends State<_TumHareketlerView> {
           child: GoldGradientIconButton(
             icon: Icons.arrow_back_ios_new,
             iconColor: Colors.black,
+            isCircle: true,
             onPressed: () => context.router.maybePop(),
           ),
         ),
@@ -133,12 +134,12 @@ class _TumHareketlerViewState extends State<_TumHareketlerView> {
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: BlocBuilder<ProductCubit, ProductState>(
+            child: BlocBuilder<StockMovementCubit, StockMovementState>(
               builder: (context, state) {
-                if (state is ProductLoading) {
+                if (state is StockMovementLoading) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                if (state is ProductError) {
+                if (state is StockMovementError) {
                   return Center(child: Text(state.message));
                 }
                 if (state is! StockMovementsLoaded) {
@@ -151,7 +152,7 @@ class _TumHareketlerViewState extends State<_TumHareketlerView> {
 
                 return RefreshIndicator(
                   onRefresh: () => context
-                      .read<ProductCubit>()
+                      .read<StockMovementCubit>()
                       .loadStockMovements(widget.productId, type: _filter),
                   child: ListView.builder(
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
@@ -169,7 +170,7 @@ class _TumHareketlerViewState extends State<_TumHareketlerView> {
                         child: StockMovementTileWidget(
                           movement: m,
                           onMenuDelete: () => context
-                              .read<ProductCubit>()
+                              .read<StockMovementCubit>()
                               .deleteStockMovement(widget.productId, m.id),
                         ),
                       );

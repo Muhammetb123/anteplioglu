@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../data/models/category_model.dart';
+import '../../domain/entities/category_entity.dart';
 
 class CategoryFilterWidget extends StatelessWidget {
   const CategoryFilterWidget({
@@ -11,7 +11,7 @@ class CategoryFilterWidget extends StatelessWidget {
     required this.onSelected,
   });
 
-  final List<CategoryModel> categories;
+  final List<CategoryEntity> categories;
   final String? selectedId;
   final ValueChanged<String?> onSelected;
 
@@ -59,20 +59,19 @@ class _Chip extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: selected ? AppColors.goldGradientColor2 : Colors.white,
+            gradient: selected ? AppColors.goldGradient : null,
+            color: selected ? null : Colors.white,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: selected
-                  ? AppColors.goldGradientColor2
-                  : const Color(0xff333333),
-            ),
+            border: selected
+                ? AppColors.goldBorder
+                : Border.all(color: const Color(0xff333333)),
           ),
           child: Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w600,
-              color: selected ? Colors.white : const Color(0xff1f1f1f),
+              color: Color(0xff1f1f1f),
             ),
           ),
         ),

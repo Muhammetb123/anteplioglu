@@ -7,7 +7,7 @@ import '../../../../core/di/di.dart';
 import '../../../../core/routing/app_router.dart';
 import '../../../../core/widgets/app_drawer.dart';
 import '../../../../core/widgets/gold_gradient_icon_button.dart';
-import '../../../admin/data/admin_repository.dart';
+import '../../domain/repositories/i_production_admin_repository.dart';
 import '../../../auth/logic/auth_cubit.dart';
 import '../../../auth/logic/auth_state.dart';
 import '../../../auth/models/branch.dart';
@@ -38,7 +38,7 @@ class _ProductionHomeView extends StatefulWidget {
 }
 
 class _ProductionHomeViewState extends State<_ProductionHomeView> {
-  final _adminRepo = getIt<AdminRepository>();
+  final _adminRepo = getIt<IProductionAdminRepository>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   Map<String, Branch> _branchById = const {};
   AppDrawerMainSection _expandedSection = AppDrawerMainSection.production;
@@ -377,7 +377,7 @@ class _OrderRow extends StatelessWidget {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: const Color(0xffc2a463),
+              color: AppColors.goldBorderColor,
               borderRadius: BorderRadius.circular(8),
             ),
             alignment: Alignment.center,

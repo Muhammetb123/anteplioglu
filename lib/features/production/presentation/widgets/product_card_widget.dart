@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../data/models/product_model.dart';
+import '../../domain/entities/product_entity.dart';
 
 class ProductCardWidget extends StatelessWidget {
   const ProductCardWidget({
@@ -11,7 +11,7 @@ class ProductCardWidget extends StatelessWidget {
     required this.onToggle,
   });
 
-  final ProductModel product;
+  final ProductEntity product;
   final VoidCallback onTap;
   final ValueChanged<bool> onToggle;
 
@@ -80,6 +80,6 @@ class _ProductImage extends StatelessWidget {
         height: 44,
         color: const Color(0xffe7eaec),
         child: const Icon(Icons.bakery_dining_outlined,
-            size: 22, color: Color(0xffc2a463)),
+            size: 22, color: AppColors.goldBorderColor),
       );
 }

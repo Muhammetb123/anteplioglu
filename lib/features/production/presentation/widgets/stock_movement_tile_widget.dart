@@ -1,6 +1,8 @@
+import 'package:antepli/features/production/data/models/stock_movement_model.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/models/stock_movement_model.dart';
+import '../../data/models/stock_movement_model.dart' show StockMovementType;
+import '../../domain/entities/stock_movement_entity.dart';
 
 class StockMovementTileWidget extends StatelessWidget {
   const StockMovementTileWidget({
@@ -9,7 +11,7 @@ class StockMovementTileWidget extends StatelessWidget {
     this.onMenuDelete,
   });
 
-  final StockMovementModel movement;
+  final StockMovementEntity movement;
   final VoidCallback? onMenuDelete;
 
   @override
@@ -34,7 +36,7 @@ class StockMovementTileWidget extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           SizedBox(
-            width: 25,
+            width: 80,
             child: Text(
               '${movement.quantity} ${movement.to?.name ?? ''}',
               textAlign: TextAlign.end,

@@ -1,4 +1,5 @@
 import '../../../../core/models/localized_name.dart';
+import '../../domain/entities/category_entity.dart';
 
 class CategoryModel {
   final String id;
@@ -25,6 +26,17 @@ class CategoryModel {
       isActive: (json['isActive'] ?? true) == true,
       createdAt: DateTime.tryParse((json['createdAt'] ?? '').toString()),
       updatedAt: DateTime.tryParse((json['updatedAt'] ?? '').toString()),
+    );
+  }
+
+  CategoryEntity toEntity() {
+    return CategoryEntity(
+      id: id,
+      name: name,
+      branchId: branchId,
+      isActive: isActive,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
     );
   }
 }

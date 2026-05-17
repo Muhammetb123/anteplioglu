@@ -1,9 +1,10 @@
-import '../../data/models/category_model.dart';
-import '../../data/models/product_model.dart';
-import '../../data/models/stock_movement_model.dart';
+import '../entities/category_entity.dart';
+import '../entities/product_entity.dart';
+import '../entities/stock_movement_entity.dart';
+import '../../data/models/stock_movement_model.dart' show StockMovementType;
 
 abstract class IProductRepository {
-  Future<ProductsPageModel> getProducts({
+  Future<ProductsPageEntity> getProducts({
     int page = 1,
     int limit = 20,
     String? search,
@@ -11,9 +12,9 @@ abstract class IProductRepository {
     String? categoryId,
   });
 
-  Future<ProductModel> getProductById(String id);
+  Future<ProductEntity> getProductById(String id);
 
-  Future<ProductModel> createProduct({
+  Future<ProductEntity> createProduct({
     required Map<String, String> name,
     required String unit,
     required num criticalStock,
@@ -23,7 +24,7 @@ abstract class IProductRepository {
     String? imagePath,
   });
 
-  Future<ProductModel> updateProduct(
+  Future<ProductEntity> updateProduct(
     String id, {
     Map<String, String>? name,
     String? unit,
@@ -35,16 +36,16 @@ abstract class IProductRepository {
 
   Future<void> deleteProduct(String id);
 
-  Future<List<CategoryModel>> getCategories();
+  Future<List<CategoryEntity>> getCategories();
 
-  Future<StockMovementsPageModel> getStockMovements(
+  Future<StockMovementsPageEntity> getStockMovements(
     String productId, {
     int page = 1,
     int limit = 20,
     StockMovementType? type,
   });
 
-  Future<StockMovementModel> addStockMovement(
+  Future<StockMovementEntity> addStockMovement(
     String productId, {
     required StockMovementType type,
     required num quantity,
@@ -55,7 +56,7 @@ abstract class IProductRepository {
     List<String>? docPaths,
   });
 
-  Future<StockMovementModel> updateStockMovement(
+  Future<StockMovementEntity> updateStockMovement(
     String productId,
     String movementId, {
     num? quantity,

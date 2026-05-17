@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 
 import '../../../../core/api_service.dart';
 import '../../../../core/network/api_error.dart';
+import '../../domain/entities/category_entity.dart';
+import '../../domain/entities/product_entity.dart';
+import '../../domain/entities/stock_movement_entity.dart';
 import '../../domain/repositories/i_product_repository.dart';
 import '../models/category_model.dart';
 import '../models/product_model.dart';
@@ -13,7 +18,7 @@ class ProductRepositoryImpl implements IProductRepository {
   ProductRepositoryImpl({required this.api});
 
   @override
-  Future<ProductsPageModel> getProducts({
+  Future<ProductsPageEntity> getProducts({
     int page = 1,
     int limit = 20,
     String? search,
@@ -29,24 +34,24 @@ class ProductRepositoryImpl implements IProductRepository {
       }
       final res = await api.get('products', queryParameters: query);
       return ProductsPageModel.fromJson(
-          Map<String, dynamic>.from(res.data as Map));
+          Map<String, dynamic>.from(res.data as Map)).toEntity();
     } on DioException catch (e) {
       throw ApiError.fromDio(e);
     }
   }
 
   @override
-  Future<ProductModel> getProductById(String id) async {
+  Future<ProductEntity> getProductById(String id) async {
     try {
       final res = await api.get('products/$id');
-      return ProductModel.fromJson(Map<String, dynamic>.from(res.data as Map));
+      return ProductModel.fromJson(Map<String, dynamic>.from(res.data as Map)).toEntity();
     } on DioException catch (e) {
       throw ApiError.fromDio(e);
     }
   }
 
   @override
-  Future<ProductModel> createProduct({
+  Future<ProductEntity> createProduct({
     required Map<String, String> name,
     required String unit,
     required num criticalStock,
@@ -57,7 +62,7 @@ class ProductRepositoryImpl implements IProductRepository {
   }) async {
     try {
       final formData = FormData.fromMap({
-        'name': name.toString(),
+        'name': jsonEncode(name),
         'unit': unit,
         'criticalStock': criticalStock,
         'categoryId': categoryId,
@@ -71,14 +76,14 @@ class ProductRepositoryImpl implements IProductRepository {
         data: formData,
         headers: {'Content-Type': 'multipart/form-data'},
       );
-      return ProductModel.fromJson(Map<String, dynamic>.from(res.data as Map));
+      return ProductModel.fromJson(Map<String, dynamic>.from(res.data as Map)).toEntity();
     } on DioException catch (e) {
       throw ApiError.fromDio(e);
     }
   }
 
   @override
-  Future<ProductModel> updateProduct(
+  Future<ProductEntity> updateProduct(
     String id, {
     Map<String, String>? name,
     String? unit,
@@ -103,7 +108,7 @@ class ProductRepositoryImpl implements IProductRepository {
         formData,
         headers: {'Content-Type': 'multipart/form-data'},
       );
-      return ProductModel.fromJson(Map<String, dynamic>.from(res.data as Map));
+      return ProductModel.fromJson(Map<String, dynamic>.from(res.data as Map)).toEntity();
     } on DioException catch (e) {
       throw ApiError.fromDio(e);
     }
@@ -119,14 +124,14 @@ class ProductRepositoryImpl implements IProductRepository {
   }
 
   @override
-  Future<List<CategoryModel>> getCategories() async {
+  Future<List<CategoryEntity>> getCategories() async {
     try {
       final res = await api.get('categories');
       final raw = res.data;
       if (raw is! List) return [];
       return raw
           .whereType<Map>()
-          .map((e) => CategoryModel.fromJson(Map<String, dynamic>.from(e)))
+          .map((e) => CategoryModel.fromJson(Map<String, dynamic>.from(e)).toEntity())
           .toList();
     } on DioException catch (e) {
       throw ApiError.fromDio(e);
@@ -134,7 +139,7 @@ class ProductRepositoryImpl implements IProductRepository {
   }
 
   @override
-  Future<StockMovementsPageModel> getStockMovements(
+  Future<StockMovementsPageEntity> getStockMovements(
     String productId, {
     int page = 1,
     int limit = 20,
@@ -146,14 +151,14 @@ class ProductRepositoryImpl implements IProductRepository {
       final res =
           await api.get('stock/$productId', queryParameters: query);
       return StockMovementsPageModel.fromJson(
-          Map<String, dynamic>.from(res.data as Map));
+          Map<String, dynamic>.from(res.data as Map)).toEntity();
     } on DioException catch (e) {
       throw ApiError.fromDio(e);
     }
   }
 
   @override
-  Future<StockMovementModel> addStockMovement(
+  Future<StockMovementEntity> addStockMovement(
     String productId, {
     required StockMovementType type,
     required num quantity,
@@ -167,11 +172,11 @@ class ProductRepositoryImpl implements IProductRepository {
       final fields = <String, dynamic>{
         'type': type.apiValue,
         'quantity': quantity,
-        'orderId': ?orderId,
-        'sourceFirm': ?sourceFirm,
-        'branchId': ?branchId,
-        'note': ?note,
       };
+      if (orderId != null) fields['orderId'] = orderId;
+      if (sourceFirm != null) fields['sourceFirm'] = sourceFirm;
+      if (branchId != null) fields['branchId'] = branchId;
+      if (note != null) fields['note'] = note;
       if (docPaths != null && docPaths.isNotEmpty) {
         fields['docs'] = await Future.wait(
           docPaths.map((p) => MultipartFile.fromFile(p)),
@@ -184,14 +189,14 @@ class ProductRepositoryImpl implements IProductRepository {
         headers: {'Content-Type': 'multipart/form-data'},
       );
       return StockMovementModel.fromJson(
-          Map<String, dynamic>.from(res.data as Map));
+          Map<String, dynamic>.from(res.data as Map)).toEntity();
     } on DioException catch (e) {
       throw ApiError.fromDio(e);
     }
   }
 
   @override
-  Future<StockMovementModel> updateStockMovement(
+  Future<StockMovementEntity> updateStockMovement(
     String productId,
     String movementId, {
     num? quantity,
@@ -201,12 +206,11 @@ class ProductRepositoryImpl implements IProductRepository {
     List<String>? docPaths,
   }) async {
     try {
-      final fields = <String, dynamic>{
-        'quantity': ?quantity,
-        'sourceFirm': ?sourceFirm,
-        'branchId': ?branchId,
-        'note': ?note,
-      };
+      final fields = <String, dynamic>{};
+      if (quantity != null) fields['quantity'] = quantity;
+      if (sourceFirm != null) fields['sourceFirm'] = sourceFirm;
+      if (branchId != null) fields['branchId'] = branchId;
+      if (note != null) fields['note'] = note;
       if (docPaths != null && docPaths.isNotEmpty) {
         fields['docs'] = await Future.wait(
           docPaths.map((p) => MultipartFile.fromFile(p)),
@@ -219,7 +223,7 @@ class ProductRepositoryImpl implements IProductRepository {
         headers: {'Content-Type': 'multipart/form-data'},
       );
       return StockMovementModel.fromJson(
-          Map<String, dynamic>.from(res.data as Map));
+          Map<String, dynamic>.from(res.data as Map)).toEntity();
     } on DioException catch (e) {
       throw ApiError.fromDio(e);
     }

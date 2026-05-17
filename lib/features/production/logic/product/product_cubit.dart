@@ -1,14 +1,30 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/network/api_error.dart';
-import '../../domain/repositories/i_product_repository.dart';
-import '../../data/models/stock_movement_model.dart';
+import '../../domain/usecases/product_usecases.dart';
 import 'product_state.dart';
 
+/// Cubit отвечает исключительно за CRUD продуктов (SRP).
+/// Движения склада — в [StockMovementCubit].
 class ProductCubit extends Cubit<ProductState> {
-  final IProductRepository _repo;
+  final GetProductsUseCase _getProducts;
+  final GetProductByIdUseCase _getProductById;
+  final CreateProductUseCase _createProduct;
+  final UpdateProductUseCase _updateProduct;
+  final GetCategoriesUseCase _getCategories;
 
-  ProductCubit(this._repo) : super(const ProductInitial());
+  ProductCubit({
+    required GetProductsUseCase getProducts,
+    required GetProductByIdUseCase getProductById,
+    required CreateProductUseCase createProduct,
+    required UpdateProductUseCase updateProduct,
+    required GetCategoriesUseCase getCategories,
+  })  : _getProducts = getProducts,
+        _getProductById = getProductById,
+        _createProduct = createProduct,
+        _updateProduct = updateProduct,
+        _getCategories = getCategories,
+        super(const ProductInitial());
 
   @override
   void emit(ProductState state) {
@@ -25,14 +41,14 @@ class ProductCubit extends Cubit<ProductState> {
     emit(const ProductLoading());
     try {
       final results = await Future.wait([
-        _repo.getProducts(
+        _getProducts(
           page: page,
           limit: limit,
           search: search,
           isActive: isActive,
           categoryId: categoryId,
         ),
-        _repo.getCategories(),
+        _getCategories(),
       ]);
       final productsPage = results[0] as dynamic;
       final categories = results[1] as dynamic;
@@ -54,7 +70,7 @@ class ProductCubit extends Cubit<ProductState> {
   Future<void> loadProductDetail(String id) async {
     emit(const ProductLoading());
     try {
-      final product = await _repo.getProductById(id);
+      final product = await _getProductById(id);
       emit(ProductDetailLoaded(product));
     } on ApiError catch (e) {
       emit(ProductError(e.message));
@@ -74,7 +90,7 @@ class ProductCubit extends Cubit<ProductState> {
   }) async {
     emit(const ProductLoading());
     try {
-      await _repo.createProduct(
+      await _createProduct(
         name: name,
         unit: unit,
         criticalStock: criticalStock,
@@ -102,7 +118,7 @@ class ProductCubit extends Cubit<ProductState> {
   }) async {
     emit(const ProductLoading());
     try {
-      await _repo.updateProduct(
+      await _updateProduct(
         id,
         name: name,
         unit: unit,
@@ -116,75 +132,6 @@ class ProductCubit extends Cubit<ProductState> {
       emit(ProductError(e.message));
     } catch (_) {
       emit(const ProductError('Ürün güncellenemedi'));
-    }
-  }
-
-  Future<void> loadStockMovements(
-    String productId, {
-    int page = 1,
-    int limit = 20,
-    StockMovementType? type,
-  }) async {
-    emit(const ProductLoading());
-    try {
-      final result = await _repo.getStockMovements(
-        productId,
-        page: page,
-        limit: limit,
-        type: type,
-      );
-      emit(StockMovementsLoaded(
-        productId: productId,
-        items: result.items,
-        currentPage: result.page,
-        totalPages: result.totalPages,
-        activeFilter: type,
-      ));
-    } on ApiError catch (e) {
-      emit(ProductError(e.message));
-    } catch (_) {
-      emit(const ProductError('Hareketler yüklenemedi'));
-    }
-  }
-
-  Future<void> addStockMovement(
-    String productId, {
-    required StockMovementType type,
-    required num quantity,
-    String? sourceFirm,
-    String? branchId,
-    String? note,
-    List<String>? docPaths,
-  }) async {
-    emit(const ProductLoading());
-    try {
-      await _repo.addStockMovement(
-        productId,
-        type: type,
-        quantity: quantity,
-        sourceFirm: sourceFirm,
-        branchId: branchId,
-        note: note,
-        docPaths: docPaths,
-      );
-      emit(const ProductActionSuccess('Hareket kaydedildi'));
-    } on ApiError catch (e) {
-      emit(ProductError(e.message));
-    } catch (_) {
-      emit(const ProductError('Hareket kaydedilemedi'));
-    }
-  }
-
-  Future<void> deleteStockMovement(
-      String productId, String movementId) async {
-    emit(const ProductLoading());
-    try {
-      await _repo.deleteStockMovement(productId, movementId);
-      emit(const ProductActionSuccess('Hareket silindi'));
-    } on ApiError catch (e) {
-      emit(ProductError(e.message));
-    } catch (_) {
-      emit(const ProductError('Hareket silinemedi'));
     }
   }
 }

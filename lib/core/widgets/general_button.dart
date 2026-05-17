@@ -33,12 +33,8 @@ class GeneralButton extends StatelessWidget {
           ? DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFFC2A463), width: 1),
-                gradient: const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xFFFBEAC4), Color(0xFFC2A463)],
-                ),
+                border: AppColors.goldBorder,
+                gradient: AppColors.goldGradient,
               ),
               child: _button(
                 isEnabled: isEnabled,

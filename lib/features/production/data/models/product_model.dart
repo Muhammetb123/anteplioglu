@@ -1,4 +1,5 @@
 import '../../../../core/models/localized_name.dart';
+import '../../domain/entities/product_entity.dart';
 import 'stock_movement_model.dart';
 
 class ProductModel {
@@ -58,6 +59,24 @@ class ProductModel {
     );
   }
 
+  ProductEntity toEntity() {
+    return ProductEntity(
+      id: id,
+      name: name,
+      unit: unit,
+      criticalStock: criticalStock,
+      categoryId: categoryId,
+      categoryName: categoryName,
+      branchId: branchId,
+      quantity: quantity,
+      isActive: isActive,
+      imageUrl: imageUrl,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      recentMovements: recentMovements.map((e) => e.toEntity()).toList(),
+    );
+  }
+
   ProductStockLevel get stockLevel {
     if (quantity > criticalStock * 1.5) return ProductStockLevel.safe;
     if (quantity <= criticalStock) return ProductStockLevel.critical;
@@ -107,6 +126,16 @@ class ProductsPageModel {
       page: (meta['page'] as num?)?.toInt() ?? 1,
       limit: (meta['limit'] as num?)?.toInt() ?? 10,
       totalPages: (meta['totalPages'] as num?)?.toInt() ?? 1,
+    );
+  }
+
+  ProductsPageEntity toEntity() {
+    return ProductsPageEntity(
+      items: items.map((e) => e.toEntity()).toList(),
+      total: total,
+      page: page,
+      limit: limit,
+      totalPages: totalPages,
     );
   }
 }

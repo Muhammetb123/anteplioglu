@@ -68,6 +68,7 @@ class _RaporlamaViewState extends State<_RaporlamaView>
           child: GoldGradientIconButton(
             icon: Icons.arrow_back_ios_new,
             iconColor: Colors.black,
+            isCircle: true,
             onPressed: () => context.router.maybePop(),
           ),
         ),
@@ -251,6 +252,19 @@ class _DateFilterBar extends StatefulWidget {
 
 class _DateFilterBarState extends State<_DateFilterBar> {
   DateTimeRange? _range;
+  late final TextEditingController _dateController;
+
+  @override
+  void initState() {
+    super.initState();
+    _dateController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
+  }
 
   String get _displayText {
     if (_range == null) return '';
@@ -273,12 +287,18 @@ class _DateFilterBarState extends State<_DateFilterBar> {
       locale: const Locale('tr'),
     );
     if (picked == null) return;
-    setState(() => _range = picked);
+    setState(() {
+      _range = picked;
+      _dateController.text = _displayText;
+    });
     widget.onDateChanged(_toApiDate(picked.start), _toApiDate(picked.end));
   }
 
   void _clear() {
-    setState(() => _range = null);
+    setState(() {
+      _range = null;
+      _dateController.clear();
+    });
     widget.onDateChanged(null, null);
   }
 
@@ -292,7 +312,7 @@ class _DateFilterBarState extends State<_DateFilterBar> {
             child: TextField(
               readOnly: true,
               onTap: _pickRange,
-              controller: TextEditingController(text: _displayText),
+              controller: _dateController,
               decoration: InputDecoration(
                 hintText: 'Tarih',
                 prefixIcon: const Icon(Icons.calendar_today_outlined, size: 18),
@@ -493,7 +513,7 @@ class _BranchReportAccordionState extends State<_BranchReportAccordion> {
                           : Container(
                               width: 40,
                               height: 40,
-                              color: const Color(0xffc2a463),
+                              color: AppColors.goldBorderColor,
                               child: const Icon(Icons.bakery_dining_outlined,
                                   color: Colors.white, size: 20),
                             ),

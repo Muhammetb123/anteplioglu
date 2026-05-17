@@ -1,7 +1,8 @@
-import '../../data/models/category_model.dart';
-import '../../data/models/product_model.dart';
-import '../../data/models/stock_movement_model.dart';
+import '../../domain/entities/category_entity.dart';
+import '../../domain/entities/product_entity.dart';
 
+/// Состояния исключительно для CRUD продуктов (SRP).
+/// Движения склада — в [StockMovementState].
 abstract class ProductState {
   const ProductState();
 }
@@ -15,8 +16,8 @@ class ProductLoading extends ProductState {
 }
 
 class ProductsLoaded extends ProductState {
-  final List<ProductModel> items;
-  final List<CategoryModel> categories;
+  final List<ProductEntity> items;
+  final List<CategoryEntity> categories;
   final int currentPage;
   final int totalPages;
   final String? activeSearch;
@@ -33,25 +34,9 @@ class ProductsLoaded extends ProductState {
 }
 
 class ProductDetailLoaded extends ProductState {
-  final ProductModel product;
+  final ProductEntity product;
 
   const ProductDetailLoaded(this.product);
-}
-
-class StockMovementsLoaded extends ProductState {
-  final String productId;
-  final List<StockMovementModel> items;
-  final int currentPage;
-  final int totalPages;
-  final StockMovementType? activeFilter;
-
-  const StockMovementsLoaded({
-    required this.productId,
-    required this.items,
-    required this.currentPage,
-    required this.totalPages,
-    this.activeFilter,
-  });
 }
 
 class ProductActionSuccess extends ProductState {

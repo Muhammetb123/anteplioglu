@@ -1,3 +1,6 @@
+
+import '../../domain/entities/stock_movement_entity.dart';
+
 enum StockMovementType {
   in_,
   out,
@@ -46,6 +49,15 @@ class MovementBranchRef {
       name: (json['name'] ?? '').toString(),
       code: (json['code'] ?? '').toString(),
       type: (json['type'] ?? '').toString(),
+    );
+  }
+
+  MovementBranchRefEntity toEntity() {
+    return MovementBranchRefEntity(
+      id: id,
+      name: name,
+      code: code,
+      type: type,
     );
   }
 }
@@ -105,6 +117,24 @@ class StockMovementModel {
       updatedAt: DateTime.tryParse((json['updatedAt'] ?? '').toString()),
     );
   }
+
+  StockMovementEntity toEntity() {
+    return StockMovementEntity(
+      id: id,
+      productId: productId,
+      type: type,
+      quantity: quantity,
+      orderId: orderId,
+      sourceFirm: sourceFirm,
+      branchId: branchId,
+      branchName: branchName,
+      to: to?.toEntity(),
+      docUrls: docUrls,
+      note: note,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+  }
 }
 
 class StockMovementsPageModel {
@@ -148,6 +178,16 @@ class StockMovementsPageModel {
       page: (meta['page'] as num?)?.toInt() ?? 1,
       limit: (meta['limit'] as num?)?.toInt() ?? 10,
       totalPages: (meta['totalPages'] as num?)?.toInt() ?? 1,
+    );
+  }
+
+  StockMovementsPageEntity toEntity() {
+    return StockMovementsPageEntity(
+      items: items.map((e) => e.toEntity()).toList(),
+      total: total,
+      page: page,
+      limit: limit,
+      totalPages: totalPages,
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:antepli/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 /// Altın gradient çerçeveli küçük ikon butonu (ör. AppBar çekmece tetikleyicisi).
@@ -10,6 +11,7 @@ class GoldGradientIconButton extends StatelessWidget {
     this.borderRadius = 10,
     this.padding = const EdgeInsets.all(5),
     this.iconSize,
+    this.isCircle = false,
   });
 
   final VoidCallback onPressed;
@@ -18,32 +20,26 @@ class GoldGradientIconButton extends StatelessWidget {
   final double borderRadius;
   final EdgeInsetsGeometry padding;
   final double? iconSize;
-
-  static const Color _borderColor = Color(0xffC2A463);
-  static const LinearGradient _gradient = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [Color(0xFFFBEAC4), Color(0xFFC2A463)],
-  );
+  final bool isCircle;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      borderRadius: icon == Icons.arrow_back_ios_new
+      borderRadius: isCircle
           ? BorderRadius.circular(100)
           : BorderRadius.circular(borderRadius),
       child: Container(
         padding: padding,
         decoration: BoxDecoration(
-          borderRadius: icon == Icons.arrow_back_ios_new
+          borderRadius: isCircle
               ? null
               : BorderRadius.circular(borderRadius),
-          shape: icon == Icons.arrow_back_ios_new
+          shape: isCircle
               ? BoxShape.circle
               : BoxShape.rectangle,
-          border: Border.all(color: _borderColor, width: 1.5),
-          gradient: _gradient,
+          border: AppColors.goldBorder,
+          gradient: AppColors.goldGradient,
         ),
         child: Icon(icon, color: iconColor, size: iconSize),
       ),
