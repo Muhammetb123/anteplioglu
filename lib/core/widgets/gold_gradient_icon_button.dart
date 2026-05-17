@@ -30,12 +30,19 @@ class GoldGradientIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      borderRadius: BorderRadius.circular(borderRadius),
+      borderRadius: icon == Icons.arrow_back_ios_new
+          ? BorderRadius.circular(100)
+          : BorderRadius.circular(borderRadius),
       child: Container(
         padding: padding,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadius),
-          border: Border.all(color: _borderColor, width: 1),
+          borderRadius: icon == Icons.arrow_back_ios_new
+              ? null
+              : BorderRadius.circular(borderRadius),
+          shape: icon == Icons.arrow_back_ios_new
+              ? BoxShape.circle
+              : BoxShape.rectangle,
+          border: Border.all(color: _borderColor, width: 1.5),
           gradient: _gradient,
         ),
         child: Icon(icon, color: iconColor, size: iconSize),

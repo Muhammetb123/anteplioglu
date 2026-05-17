@@ -32,12 +32,6 @@ const _kProductionTitles = [
   'Raporlar',
 ];
 
-const _kBranchAdminSubItems = <Widget>[
-  AppDrawerStaticItem(title: 'Kullanicilar'),
-  AppDrawerStaticItem(title: 'Personeller'),
-  AppDrawerStaticItem(title: 'Birimler'),
-];
-
 List<Widget> _tapDrawerRows(
   BuildContext context,
   List<String> titles,
@@ -63,7 +57,6 @@ class AppDrawerAdmin extends StatelessWidget {
     super.key,
     required this.expandedSection,
     required this.onAdminHeaderTap,
-    required this.adminSectionChildren,
     required this.onWarehouseHeaderTap,
     required this.onProductionHeaderTap,
     this.footer,
@@ -75,7 +68,6 @@ class AppDrawerAdmin extends StatelessWidget {
 
   final AppDrawerMainSection expandedSection;
   final VoidCallback onAdminHeaderTap;
-  final List<Widget> adminSectionChildren;
   final VoidCallback onWarehouseHeaderTap;
   final VoidCallback onProductionHeaderTap;
   final Widget? footer;
@@ -128,10 +120,6 @@ class AppDrawerAdmin extends StatelessWidget {
                         expanded: expandedSection == AppDrawerMainSection.admin,
                         onTap: onAdminHeaderTap,
                       ),
-                    ),
-                    _DrawerAnimatedSection.admin(
-                      expanded: expandedSection == AppDrawerMainSection.admin,
-                      children: adminSectionChildren,
                     ),
                     const SizedBox(height: 12),
                     Padding(
@@ -240,10 +228,6 @@ class AppDrawerBranch extends StatelessWidget {
                           onAdminTap();
                         },
                       ),
-                    ),
-                    _DrawerAnimatedSection.branch(
-                      expanded: expandedSection == AppDrawerMainSection.admin,
-                      children: _kBranchAdminSubItems,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(

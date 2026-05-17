@@ -33,13 +33,13 @@ class Product {
   /// - warning: criticalStock <= quantity < 2 * criticalStock (sarı)
   /// - critical: quantity < criticalStock (kırmızı)
   ProductStockLevel get stockLevel {
-    if (criticalStock <= 0) {
+    if (quantity > criticalStock * 1.5) {
       return ProductStockLevel.safe;
     }
-    if (quantity < criticalStock) {
+    if (quantity <= criticalStock) {
       return ProductStockLevel.critical;
     }
-    if (quantity < criticalStock * 2) {
+    if ((quantity < criticalStock * 1.5) && (quantity > criticalStock)) {
       return ProductStockLevel.warning;
     }
     return ProductStockLevel.safe;

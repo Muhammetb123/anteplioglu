@@ -7,8 +7,13 @@ import '../routing/app_router.dart';
 import '../../features/auth/data/auth_repository.dart';
 import '../../features/auth/logic/auth_cubit.dart';
 import '../../features/admin/data/admin_repository.dart';
-import '../../features/production/data/production_repository.dart';
 import '../../features/warehouse/data/warehouse_repository.dart';
+import '../../features/production/data/repositories/order_repository_impl.dart';
+import '../../features/production/data/repositories/product_repository_impl.dart';
+import '../../features/production/data/repositories/report_repository_impl.dart';
+import '../../features/production/domain/repositories/i_order_repository.dart';
+import '../../features/production/domain/repositories/i_product_repository.dart';
+import '../../features/production/domain/repositories/i_report_repository.dart';
 import '../storage/token_storage.dart';
 
 final getIt = GetIt.instance;
@@ -36,8 +41,14 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton<WarehouseRepository>(
       () => WarehouseRepository(api: getIt<ApiService>()),
     )
-    ..registerLazySingleton<ProductionRepository>(
-      () => ProductionRepository(api: getIt<ApiService>()),
+    ..registerLazySingleton<IOrderRepository>(
+      () => OrderRepositoryImpl(api: getIt<ApiService>()),
+    )
+    ..registerLazySingleton<IProductRepository>(
+      () => ProductRepositoryImpl(api: getIt<ApiService>()),
+    )
+    ..registerLazySingleton<IReportRepository>(
+      () => ReportRepositoryImpl(api: getIt<ApiService>()),
     )
     ..registerFactory<AuthCubit>(
       () => AuthCubit(

@@ -41,9 +41,16 @@ class AdminRepository {
     }
   }
 
-  Future<List<Branch>> getBranches() async {
+  Future<List<Branch>> getBranches({String? type}) async {
     try {
-      final res = await api.get('admin/branches',);
+      final query = <String, dynamic>{};
+      if (type != null && type.trim().isNotEmpty) {
+        query['type'] = type.trim();
+      }
+      final res = await api.get(
+        'admin/branches',
+        queryParameters: query.isEmpty ? null : query,
+      );
       final data = res.data;
       if (data is! List) return const [];
       return data
@@ -62,7 +69,7 @@ class AdminRepository {
       if (data is Map) {
         return Branch.fromJson(Map<String, dynamic>.from(data));
       }
-      throw ApiError(message: 'Birim olusturma yaniti gecersiz');
+      throw ApiError(message: 'Şube olusturma yaniti gecersiz');
     } on DioException catch (e) {
       throw ApiError.fromDio(e);
     }
@@ -101,6 +108,7 @@ class AdminRepository {
     String? search,
     String? roleId,
     String? branchId,
+    bool? isPersonel,
   }) async {
     try {
       final query = <String, dynamic>{'page': page, 'limit': limit};
@@ -112,6 +120,9 @@ class AdminRepository {
       }
       if (branchId != null && branchId.trim().isNotEmpty) {
         query['branchId'] = branchId.trim();
+      }
+      if (isPersonel != null) {
+        query['isPersonel'] = isPersonel;
       }
 
       final res = await api.get('admin/users', queryParameters: query);

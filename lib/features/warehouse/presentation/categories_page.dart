@@ -174,7 +174,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Admin birimi secilemedi')));
+      ).showSnackBar(const SnackBar(content: Text('Admin şubesi secilemedi')));
     }
   }
 
@@ -209,7 +209,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       if (target == null) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('"$branchCode" birim bilgisi bulunamadi')),
+          SnackBar(content: Text('"$branchCode" şube bilgisi bulunamadi')),
         );
         return;
       }
@@ -229,7 +229,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Birim secilemedi')));
+      ).showSnackBar(const SnackBar(content: Text('Şube secilemedi')));
     }
   }
 
@@ -250,7 +250,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
         context.router.replace(const ProductionHomeRoute());
         return;
       case 'Siparis Yonetimi':
-        context.router.replace(const IncomingOrdersRoute());
+        context.router.replace(const SiparisListesiRoute());
         return;
       default:
         ScaffoldMessenger.of(

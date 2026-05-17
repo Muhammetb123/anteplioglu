@@ -8,8 +8,12 @@ import '../../features/auth/presentation/signup_page.dart';
 import '../../features/auth/presentation/verify_email_page.dart';
 import '../../features/home/presentation/admin_home_page.dart';
 import '../../features/home/presentation/main_home_page.dart';
-import '../../features/production/presentation/incoming_orders_page.dart';
-import '../../features/production/presentation/production_home_page.dart';
+import '../../features/production/presentation/pages/production_home_page.dart';
+import '../../features/production/presentation/pages/siparis_listesi_page.dart';
+import '../../features/production/presentation/pages/urun_yonetimi_page.dart';
+import '../../features/production/presentation/pages/urun_detayi_page.dart';
+import '../../features/production/presentation/pages/tum_hareketler_page.dart';
+import '../../features/production/presentation/pages/raporlama_page.dart';
 import '../../features/warehouse/presentation/categories_page.dart';
 
 part 'app_router.gr.dart';
@@ -27,6 +31,10 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: MainHomeRoute.page),
     AutoRoute(page: CategoriesRoute.page),
     AutoRoute(page: ProductionHomeRoute.page),
-    AutoRoute(page: IncomingOrdersRoute.page),
+    AutoRoute(page: SiparisListesiRoute.page),
+    AutoRoute(page: UrunYonetimiRoute.page),
+    AutoRoute(page: UrunDetayiRoute.page),
+    AutoRoute(page: TumHareketlerRoute.page),
+    AutoRoute(page: RaporlamaRoute.page),
   ];
 }

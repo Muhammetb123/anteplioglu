@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'core/constants/app_colors.dart';
 import 'core/di/di.dart';
 import 'core/routing/app_router.dart';
 import 'features/auth/logic/auth_cubit.dart';
@@ -52,7 +53,7 @@ class AntepliApp extends StatelessWidget {
           supportedLocales: context.supportedLocales,
           localizationsDelegates: context.localizationDelegates,
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+            colorScheme: ColorScheme.fromSeed(seedColor: AppColors.mainColor),
             useMaterial3: true,
           ),
           routerConfig: appRouter.config(),

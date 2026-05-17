@@ -11,6 +11,11 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit({required this.repo, required this.tokenStorage}) : super(const AuthUnknown());
 
+  @override
+  void emit(AuthState state) {
+    if (!isClosed) super.emit(state);
+  }
+
   Future<void> bootstrap() async {
     final token = tokenStorage.accessToken;
     if (token == null || token.isEmpty) {
