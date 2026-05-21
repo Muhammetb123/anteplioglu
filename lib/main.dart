@@ -1,16 +1,15 @@
 import 'package:antepli/core/app_bloc_observer.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:module_auth/module_auth.dart';
 
-import 'core/constants/app_colors.dart';
 import 'core/di/di.dart';
 import 'core/routing/app_router.dart';
-import 'features/auth/logic/auth_cubit.dart';
-import 'features/auth/logic/auth_state.dart';
 
 Future<void> main() async {
   Bloc.observer = AppBlocObserver();

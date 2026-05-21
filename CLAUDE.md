@@ -128,4 +128,4 @@ Flutter BLoC (Cubits). `AppBlocObserver` логирует все переход�
 Все кнопки назад должны быть круглыми
 
 ### Кнопки на Appbar
-ВСЕ КНОПКИ на апбар имеютцвет gold gradient
+ВСЕ КНОПКИ на апбар имеют цвет gold gradient

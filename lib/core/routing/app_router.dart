@@ -1,20 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/widgets.dart';
 
-import '../../features/auth/presentation/bootstrap_page.dart';
-import '../../features/auth/presentation/forgot_password_page.dart';
-import '../../features/auth/presentation/signin_page.dart';
-import '../../features/auth/presentation/signup_page.dart';
-import '../../features/auth/presentation/verify_email_page.dart';
-import '../../features/home/presentation/admin_home_page.dart';
-import '../../features/home/presentation/main_home_page.dart';
-import '../../features/production/presentation/pages/production_home_page.dart';
-import '../../features/production/presentation/pages/siparis_listesi_page.dart';
-import '../../features/production/presentation/pages/urun_yonetimi_page.dart';
-import '../../features/production/presentation/pages/urun_detayi_page.dart';
-import '../../features/production/presentation/pages/tum_hareketler_page.dart';
-import '../../features/production/presentation/pages/raporlama_page.dart';
-import '../../features/warehouse/presentation/categories_page.dart';
+import 'package:module_auth/module_auth.dart';
+import 'package:module_admin/module_admin.dart';
+import 'package:module_depo/module_depo.dart';
+import 'package:module_produksiyon/module_produksiyon.dart';
+
+
 
 part 'app_router.gr.dart';
 

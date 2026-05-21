@@ -1,5 +1,6 @@
 name: core
 description: "A new Flutter package project."
+publish_to: 'none'
 version: 0.0.1
 homepage:
 
@@ -10,6 +11,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  dio: ^5.9.2
+  shared_preferences: ^2.5.5
+  flutter_dotenv: ^6.0.1
+  get_it: ^9.2.1
 
 dev_dependencies:
   flutter_test:

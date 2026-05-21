@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 
-import '../../features/auth/models/user.dart';
-import 'app_router.dart';
+import 'package:module_auth/module_auth.dart';
+import 'package:module_admin/module_admin.dart';
+import 'package:module_depo/module_depo.dart';
+import 'package:module_produksiyon/module_produksiyon.dart';
 
 /// Admin ilk giriş / oturum yenileme sonrası hedef rota.
 ///

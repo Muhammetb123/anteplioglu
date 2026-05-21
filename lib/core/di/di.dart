@@ -1,30 +1,14 @@
 import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:module_auth/module_auth.dart';
+import 'package:module_admin/module_admin.dart';
+import 'package:module_depo/module_depo.dart';
+import 'package:module_produksiyon/module_produksiyon.dart';
 
-import '../api_service.dart';
+import 'package:core/core.dart';
+export 'package:core/core.dart' show getIt;
 import '../routing/app_router.dart';
-import '../../features/auth/data/auth_repository.dart';
-import '../../features/auth/logic/auth_cubit.dart';
-import '../../features/admin/data/admin_repository.dart';
-import '../../features/warehouse/data/warehouse_repository.dart';
-import '../../features/production/data/repositories/order_repository_impl.dart';
-import '../../features/production/data/repositories/product_repository_impl.dart';
-import '../../features/production/data/repositories/report_repository_impl.dart';
-import '../../features/production/domain/repositories/i_order_repository.dart';
-import '../../features/production/domain/repositories/i_product_repository.dart';
-import '../../features/production/domain/repositories/i_report_repository.dart';
-import '../storage/token_storage.dart';
-
-import '../../features/production/domain/usecases/product_usecases.dart';
-import '../../features/production/domain/usecases/stock_movement_usecases.dart';
-import '../../features/production/logic/product/product_cubit.dart';
-import '../../features/production/logic/stock_movement/stock_movement_cubit.dart';
-
-import '../../features/production/data/repositories/production_admin_repository_impl.dart';
-import '../../features/production/domain/repositories/i_production_admin_repository.dart';
-
-final getIt = GetIt.instance;
+import '../routing/auth_navigator_impl.dart';
 
 Future<void> configureDependencies() async {
   final prefs = await SharedPreferences.getInstance();
@@ -37,6 +21,7 @@ Future<void> configureDependencies() async {
     ..registerLazySingleton<ApiService>(
       () => ApiService(dio: getIt<Dio>(), tokenStorage: getIt<TokenStorage>()),
     )
+    ..registerLazySingleton<AuthNavigator>(() => AuthNavigatorImpl())
     ..registerLazySingleton<AuthRepository>(
       () => AuthRepository(
         api: getIt<ApiService>(),
